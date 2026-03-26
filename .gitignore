@@ -1,0 +1,88 @@
+# Environment and Secrets
+.env
+.env.local
+.env.*.local
+!sample.env
+!.env.example
+
+# Sessions and Journals
+*.session
+*.session-journal
+AnnieXMusic.session*
+SaregamaMusic.session*
+
+# Logs
+log.txt
+logs/
+*.log
+
+# Cache and Temporary Files
+.cache/
+cache/
+downloads/
+couples/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# IDE and Editor Files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Build and Distribution
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Media and Assets (optional - uncomment if needed)
+# AnnieXMedia/assets/*.png
+# AnnieXMedia/assets/*.ttf
+# *.jpg
+# *.jpeg
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup Files
+*.bak
+*.backup
+*.old
+
+# Node Modules (if any)
+node_modules/
+
+# Heroku
+.heroku/
+
+# Docker
+docker-compose.override.yml
