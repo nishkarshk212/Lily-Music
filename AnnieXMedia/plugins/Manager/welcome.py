@@ -16,6 +16,8 @@ FONT_PATH = "AnnieXMedia/assets/annie/Arimo.ttf"
 BTN_VIEW = "๏ ᴠɪᴇᴡ ɴᴇᴡ ᴍᴇᴍʙᴇʀ ๏"
 BTN_ADD = "๏ ᴋɪᴅɴᴀᴘ ᴍᴇ ๏"
 
+WELCOME_VIDEO_URL = "https://files.catbox.moe/xegn0z.mp4"
+
 CAPTION_TXT = """
 **❅────✦ ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ✦────❅
 {chat_title}
@@ -152,9 +154,9 @@ async def welcome(client, update: ChatMemberUpdated):
     )
 
     sent = await safe_send(
-        client.send_photo,
+        client.send_video,
         cid,
-        img,
+        WELCOME_VIDEO_URL,
         caption=caption,
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(BTN_VIEW, url=f"tg://openmessage?user_id={user.id}")],
