@@ -22,7 +22,12 @@ async def skip(cli, message: Message):
     from strings import get_string
     
     chat_id = message.chat.id
-    _ = await get_string(message.chat.id)
+    
+    # Get language with fallback to English on error
+    try:
+        _ = await get_string(message.chat.id)
+    except Exception:
+        _ = get_string("en")
     
     permission = await get_skip_permission(chat_id)
     
