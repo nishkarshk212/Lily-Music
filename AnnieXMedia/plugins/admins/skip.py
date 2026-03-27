@@ -7,7 +7,6 @@ from AnnieXMedia import YouTube, app
 from AnnieXMedia.core.call import StreamController
 from AnnieXMedia.misc import db
 from AnnieXMedia.utils.database import get_loop, get_skip_permission
-from AnnieXMedia.utils.decorators import AdminRightsCheck
 from AnnieXMedia.utils.inline import close_markup, stream_markup
 from AnnieXMedia.utils.stream.autoclear import auto_clean
 from AnnieXMedia.utils.thumbnails import get_thumb
@@ -17,10 +16,13 @@ from config import BANNED_USERS
 @app.on_message(
     filters.command(["skip", "cskip", "next", "cnext"], prefixes=["/", "!"]) & filters.group & ~BANNED_USERS
 )
-async def skip(cli, message: Message, _, chat_id):
+async def skip(cli, message: Message):
     # Check skip permissions
     from pyrogram.enums import ChatMemberStatus
-    from AnnieXMedia.utils.admin_check import admin_check
+    from strings import get_string
+    
+    chat_id = message.chat.id
+    _ = await get_string(message.chat.id)
     
     permission = await get_skip_permission(chat_id)
     
