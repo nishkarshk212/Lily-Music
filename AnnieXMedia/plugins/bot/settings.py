@@ -259,24 +259,24 @@ async def playmode_ans(client, callback: CallbackQuery, _):
 
 @app.on_callback_query(filters.regex(r"^SET_SKIP_(ADMIN|MEMBER|EVERYONE)$") & ~BANNED_USERS)
 @ActualAdminCB
-async def set_skip_permission(client, CallbackQuery, _):
-    command = CallbackQuery.matches[0].group(1).lower()
+async def set_skip_permission(client, callback: CallbackQuery, _):
+    command = callback.matches[0].group(1).lower()
     
     if command == "admin":
-        await set_skip_permission(CallbackQuery.message.chat.id, "admin")
+        await set_skip_permission(callback.message.chat.id, "admin")
     elif command == "member":
-        await set_skip_permission(CallbackQuery.message.chat.id, "member")
+        await set_skip_permission(callback.message.chat.id, "member")
     elif command == "everyone":
-        await set_skip_permission(CallbackQuery.message.chat.id, "everyone")
+        await set_skip_permission(callback.message.chat.id, "everyone")
     
     try:
-        await CallbackQuery.answer(_["set_cb_5"], show_alert=True)
+        await callback.answer(_["set_cb_5"], show_alert=True)
     except Exception:
         pass
     
-    current_mode = await get_skip_permission(CallbackQuery.message.chat.id)
+    current_mode = await get_skip_permission(callback.message.chat.id)
     buttons = skip_permission_markup(_, current_mode)
-    return await CallbackQuery.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(buttons))
+    return await callback.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(buttons))
 
 
 # ─── AUTH USERS (AUTH / AUTHLIST) ─────────────────────────────────────
