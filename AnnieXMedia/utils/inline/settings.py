@@ -26,8 +26,8 @@ def setting_markup(_):
     return buttons
 
 
-def skip_permission_markup(_, current_mode: str = "admin"):
-    """Generate inline keyboard for skip permission settings"""
+def skip_permission_markup(current_mode: str = "admin"):
+    """Generate inline keyboard for skip permission settings - Fresh implementation"""
     buttons = [
         [
             InlineKeyboardButton(
@@ -49,10 +49,10 @@ def skip_permission_markup(_, current_mode: str = "admin"):
         ],
         [
             InlineKeyboardButton(
-                text=_["BACK_BUTTON"],
-                callback_data="SETTINGS_BACK",
+                text="« Bᴀᴄᴋ",
+                callback_data="SKIP_PERMISSION_SETTINGS_BACK",
             ),
-            InlineKeyboardButton(text=_["CLOSE_BUTTON"], callback_data="close"),
+            InlineKeyboardButton(text="✖ Cʟᴏsᴇ", callback_data="close"),
         ],
     ]
     return buttons

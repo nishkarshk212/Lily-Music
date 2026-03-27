@@ -148,11 +148,11 @@ async def without_admin_rights(client, callback: CallbackQuery, _):
         buttons = vote_mode_markup(_, current, mode)
     if command == "SKIP_PERMISSION_SETTINGS":
         try:
-            await callback.answer(_["set_cb_3"], show_alert=True)
+            await callback.answer("Opening skip permission settings...", show_alert=False)
         except Exception:
             pass
         current_mode = await get_skip_permission(callback.message.chat.id)
-        buttons = skip_permission_markup(_, current_mode)
+        buttons = skip_permission_markup(current_mode)
     try:
         return await callback.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(buttons))
     except MessageNotModified:
@@ -257,26 +257,41 @@ async def playmode_ans(client, callback: CallbackQuery, _):
 
 # ─── SKIP PERMISSION SETTINGS ──────────────────────────────────────
 
-@app.on_callback_query(filters.regex(r"^SET_SKIP_(ADMIN|MEMBER|EVERYONE)$") & ~BANNED_USERS)
-@ActualAdminCB
-async def set_skip_permission(client, callback: CallbackQuery, _):
-    command = callback.matches[0].group(1).lower()
-    
-    if command == "admin":
-        await set_skip_permission(callback.message.chat.id, "admin")
-    elif command == "member":
-        await set_skip_permission(callback.message.chat.id, "member")
-    elif command == "everyone":
-        await set_skip_permission(callback.message.chat.id, "everyone")
-    
+@app.on_callback_query(filters.regex("^SKIP_PERMISSION_SETTINGS_BACK$") & ~BANNED_USERS)
+async def skip_permission_back_handler(client, callback: CallbackQuery):
+    """Handle back button from skip permission settings"""
     try:
-        await callback.answer(_["set_cb_5"], show_alert=True)
-    except Exception:
-        pass
-    
-    current_mode = await get_skip_permission(callback.message.chat.id)
-    buttons = skip_permission_markup(_, current_mode)
-    return await callback.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(buttons))
+        await callback.answer("Going back...", show_alert=False)
+        # Go back to main settings
+        buttons = setting_markup()
+        await callback.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(buttons))
+    except Exception as e:
+        print(f"Error in skip_permission_back_handler: {e}")
+
+@app.on_callback_query(filters.regex(r"^SET_SKIP_(ADMIN|MEMBER|EVERYONE)$") & ~BANNED_USERS)
+async def set_skip_permission_handler(client, callback: CallbackQuery):
+    """Handle skip permission button clicks - Fresh implementation"""
+    try:
+        # Get chat ID and command
+        chat_id = callback.message.chat.id
+        command = callback.matches[0].group(1).lower()
+        
+        # Set the new permission mode
+        await set_skip_permission(chat_id, command)
+        
+        # Answer the callback
+        await callback.answer("✅ Skip permission updated!", show_alert=False)
+        
+        # Get current mode and update buttons
+        current_mode = await get_skip_permission(chat_id)
+        buttons = skip_permission_markup(current_mode)
+        
+        # Edit the message
+        await callback.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(buttons))
+        
+    except Exception as e:
+        print(f"Error in set_skip_permission_handler: {e}")
+        await callback.answer("❌ Error updating permission", show_alert=True)
 
 
 # ─── AUTH USERS (AUTH / AUTHLIST) ─────────────────────────────────────
