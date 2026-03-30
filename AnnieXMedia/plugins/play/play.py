@@ -392,7 +392,8 @@ async def play_command(
                 )
                 return await mystic.edit_text(err)
 
-            return await play_logs(message, streamtype="M3U8 or Index Link")
+            await play_logs(message, streamtype="M3U8 or Index Link")
+            return
 
     else:
         if len(message.command) < 2:
@@ -460,7 +461,8 @@ async def play_command(
             return await mystic.edit_text(err)
 
         await mystic.delete()
-        return await play_logs(message, streamtype=log_label)
+        await play_logs(message, streamtype=log_label)
+        return
 
     else:
         if plist_type:
@@ -517,7 +519,8 @@ async def play_command(
                     ),
                     reply_markup=InlineKeyboardMarkup(buttons),
                 )
-                return await play_logs(message, streamtype="Searched on YouTube")
+                await play_logs(message, streamtype="Searched on YouTube")
+                return
 
             else:
                 buttons = track_markup(
@@ -536,7 +539,8 @@ async def play_command(
                     ),
                     reply_markup=InlineKeyboardMarkup(buttons),
                 )
-                return await play_logs(message, streamtype="URL Search Inline")
+                await play_logs(message, streamtype="URL Search Inline")
+                return
 
 
 @app.on_callback_query(filters.regex("MusicStream") & ~BANNED_USERS)

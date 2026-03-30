@@ -13,12 +13,13 @@ async def chk_usr(_, message: Message):
     if message.sender_chat or not await check_pretender(message.chat.id):
         return
     if not await usr_data(message.from_user.id):
-        return await add_userdata(
+        await add_userdata(
             message.from_user.id,
             message.from_user.username,
             message.from_user.first_name,
             message.from_user.last_name,
         )
+        return
     usernamebefore, first_name, lastname_before = await get_userdata(message.from_user.id)
     msg = ""
     if (
