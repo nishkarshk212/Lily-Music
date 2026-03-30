@@ -165,7 +165,7 @@ async def start_gp(client, message: Message, _):
         )
     except:
         pass
-    return await add_served_chat(message.chat.id)
+    await add_served_chat(message.chat.id)
 
 
 @app.on_message(filters.new_chat_members, group=-1)
