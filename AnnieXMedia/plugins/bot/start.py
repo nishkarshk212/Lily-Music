@@ -184,7 +184,8 @@ async def welcome(client, message: Message):
             if member.id == app.id:
                 if message.chat.type != ChatType.SUPERGROUP:
                     await message.reply_text(_["start_4"])
-                    return await app.leave_chat(message.chat.id)
+                    await app.leave_chat(message.chat.id)
+                    return
 
                 if message.chat.id in await blacklisted_chats():
                     await message.reply_text(
@@ -195,7 +196,8 @@ async def welcome(client, message: Message):
                         ),
                         disable_web_page_preview=True,
                     )
-                    return await app.leave_chat(message.chat.id)
+                    await app.leave_chat(message.chat.id)
+                    return
 
                 out = start_panel(_)
                 await message.reply_video(
