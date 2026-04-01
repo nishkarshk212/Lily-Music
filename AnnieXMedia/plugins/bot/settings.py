@@ -313,7 +313,7 @@ async def authusers_mar(client, callback: CallbackQuery, _):
         if not _authusers:
             try:
                 await callback.answer(_["setting_4"], show_alert=True)
-        return
+                return
             except Exception:
                 return
         else:
