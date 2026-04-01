@@ -147,12 +147,15 @@ async def queued_tracks(client, CallbackQuery: CallbackQuery, _):
     except:
         return
     if not await is_active_chat(chat_id):
-        return await CallbackQuery.answer(_["general_5"], show_alert=True)
+        await CallbackQuery.answer(_["general_5"], show_alert=True)
+        return
     got = db.get(chat_id)
     if not got:
-        return await CallbackQuery.answer(_["queue_2"], show_alert=True)
+        await CallbackQuery.answer(_["queue_2"], show_alert=True)
+        return
     if len(got) == 1:
-        return await CallbackQuery.answer(_["queue_5"], show_alert=True)
+        await CallbackQuery.answer(_["queue_5"], show_alert=True)
+        return
     await CallbackQuery.answer()
     basic[videoid] = False
     buttons = queue_back_markup(_, what)
@@ -195,10 +198,12 @@ async def queue_back(client, CallbackQuery: CallbackQuery, _):
     except:
         return
     if not await is_active_chat(chat_id):
-        return await CallbackQuery.answer(_["general_5"], show_alert=True)
+        await CallbackQuery.answer(_["general_5"], show_alert=True)
+        return
     got = db.get(chat_id)
     if not got:
-        return await CallbackQuery.answer(_["queue_2"], show_alert=True)
+        await CallbackQuery.answer(_["queue_2"], show_alert=True)
+        return
     await CallbackQuery.answer(_["set_cb_5"], show_alert=True)
     file = got[0]["file"]
     videoid = got[0]["vidid"]

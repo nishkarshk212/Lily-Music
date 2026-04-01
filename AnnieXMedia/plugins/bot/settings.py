@@ -94,33 +94,39 @@ async def without_admin_rights(client, callback: CallbackQuery, _):
     command = callback.matches[0].group(1)
     if command == "SEARCH_MODE_INFO":
         try:
-            return await callback.answer(_["setting_2"], show_alert=True)
+            await callback.answer(_["setting_2"], show_alert=True)
+            return
         except Exception:
             return
     if command == "CHANNEL_MODE_INFO":
         try:
-            return await callback.answer(_["setting_5"], show_alert=True)
+            await callback.answer(_["setting_5"], show_alert=True)
+            return
         except Exception:
             return
     if command == "PLAY_TYPE_INFO":
         try:
-            return await callback.answer(_["setting_6"], show_alert=True)
+            await callback.answer(_["setting_6"], show_alert=True)
+            return
         except Exception:
             return
     if command == "AUTH_USERS_INFO":
         try:
-            return await callback.answer(_["setting_3"], show_alert=True)
+            await callback.answer(_["setting_3"], show_alert=True)
+            return
         except Exception:
             return
     if command == "VOTE_MODE_INFO":
         try:
-            return await callback.answer(_["setting_8"], show_alert=True)
+            await callback.answer(_["setting_8"], show_alert=True)
+            return
         except Exception:
             return
     if command == "CURRENT_VOTE_INFO":
         current = await get_upvote_count(callback.message.chat.id)
         try:
-            return await callback.answer(_["setting_9"].format(current), show_alert=True)
+            await callback.answer(_["setting_9"].format(current), show_alert=True)
+            return
         except Exception:
             return
     if command == "PLAYBACK_SETTINGS":
@@ -166,7 +172,8 @@ async def vote_count_adjust(client, callback: CallbackQuery, _):
     command = callback.matches[0].group(1)
     
     if not await is_skipmode(callback.message.chat.id):
-        return await callback.answer(_["setting_10"], show_alert=True)
+        await callback.answer(_["setting_10"], show_alert=True)
+        return
     
     current = await get_upvote_count(callback.message.chat.id)
     

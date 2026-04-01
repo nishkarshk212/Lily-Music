@@ -82,8 +82,10 @@ async def close_bug_report(_, query: CallbackQuery):
     try:
         member = await app.get_chat_member(query.message.chat.id, query.from_user.id)
         if not member.privileges or not member.privileges.can_delete_messages:
-            return await query.answer("ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴛʜɪs.", show_alert=True)
+            await query.answer("ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴛʜɪs.", show_alert=True)
+            return
     except:
-        return await query.answer("ᴄᴏᴜʟᴅ ɴᴏᴛ ᴠᴇʀɪғʏ ᴀᴄᴄᴇss.", show_alert=True)
+        await query.answer("ᴄᴏᴜʟᴅ ɴᴏᴛ ᴠᴇʀɪғʏ ᴀᴄᴄᴇss.", show_alert=True)
+        return
 
     await query.message.delete()

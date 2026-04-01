@@ -82,7 +82,8 @@ async def handle_show_overview(client, callback_query, _):
 @languageCB
 async def handle_show_bot_stats(client, callback_query, _):
     if callback_query.from_user.id not in SUDOERS:
-        return await callback_query.answer(_["gstats_4"], show_alert=True)
+        await callback_query.answer(_["gstats_4"], show_alert=True)
+        return
     back_keyboard = build_back_keyboard(_)
     try:
         await callback_query.answer()

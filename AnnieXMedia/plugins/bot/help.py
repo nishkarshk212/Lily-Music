@@ -62,7 +62,8 @@ async def help_com_group(client: Client, message: Message, _):
 async def helper_cb(client: Client, CallbackQuery: types.CallbackQuery, _):
     match = re.match(r"help_callback hb(\d+)_p(\d+)", CallbackQuery.data)
     if not match:
-        return await CallbackQuery.answer("Invalid callback.", show_alert=True)
+        await CallbackQuery.answer("Invalid callback.", show_alert=True)
+        return
 
     number = int(match.group(1))
     current_page = int(match.group(2))
@@ -79,7 +80,8 @@ async def helper_cb(client: Client, CallbackQuery: types.CallbackQuery, _):
     #── All other categories
     help_text = getattr(helpers, f"HELP_{number}", None)
     if not help_text:
-        return await CallbackQuery.answer("Invalid help topic.", show_alert=True)
+        await CallbackQuery.answer("Invalid help topic.", show_alert=True)
+        return
 
     await CallbackQuery.edit_message_text(
         help_text,
@@ -122,7 +124,8 @@ async def help_back_cb(client: Client, CallbackQuery: types.CallbackQuery, _):
     elif page == "2":
         keyboard = second_page(_)
     else:
-        return await CallbackQuery.answer("Invalid page.", show_alert=True)
+        await CallbackQuery.answer("Invalid page.", show_alert=True)
+        return
 
     await CallbackQuery.edit_message_text(
         _["help_1"].format(SUPPORT_CHAT),

@@ -553,7 +553,8 @@ async def play_music(client, CallbackQuery, _):
         vidid, user_id, mode, cplay, fplay = callback_data.split("|")
 
         if CallbackQuery.from_user.id != int(user_id):
-            return await CallbackQuery.answer(_["playcb_1"], show_alert=True)
+            await CallbackQuery.answer(_["playcb_1"], show_alert=True)
+            return
 
         chat_id, channel = await get_channeplayCB(_, cplay, CallbackQuery)
 
@@ -648,7 +649,8 @@ async def play_playlists_command(client, CallbackQuery, _):
         videoid, user_id, ptype, mode, cplay, fplay = callback_data.split("|")
 
         if CallbackQuery.from_user.id != int(user_id):
-            return await CallbackQuery.answer(_["playcb_1"], show_alert=True)
+            await CallbackQuery.answer(_["playcb_1"], show_alert=True)
+            return
 
         chat_id, channel = await get_channeplayCB(_, cplay, CallbackQuery)
         user_name = CallbackQuery.from_user.first_name
@@ -739,7 +741,8 @@ async def slider_queries(client, CallbackQuery, _):
         what, rtype, query, user_id, cplay, fplay = callback_data.split("|")
 
         if CallbackQuery.from_user.id != int(user_id):
-            return await CallbackQuery.answer(_["playcb_1"], show_alert=True)
+            await CallbackQuery.answer(_["playcb_1"], show_alert=True)
+            return
 
         rtype = int(rtype)
         query_type = (rtype + 1) if what == "F" else (rtype - 1)

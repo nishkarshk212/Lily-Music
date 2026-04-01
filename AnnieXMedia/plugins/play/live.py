@@ -19,7 +19,8 @@ async def play_live_stream(client, CallbackQuery, _):
 
     if CallbackQuery.from_user.id != int(user_id):
         try:
-            return await CallbackQuery.answer(_["playcb_1"], show_alert=True)
+            await CallbackQuery.answer(_["playcb_1"], show_alert=True)
+            return
         except Exception:
             return
 

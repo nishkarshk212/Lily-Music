@@ -65,7 +65,8 @@ async def sudoers_list(client, message: Message):
 @app.on_callback_query(filters.regex("^sudo_list_view$"))
 async def view_sudo_list_callback(client, callback_query: CallbackQuery):
     if callback_query.from_user.id not in SUDOERS:
-        return await callback_query.answer("ᴏɴʟʏ sᴜᴅᴏᴇʀs ᴀɴᴅ ᴏᴡɴᴇʀ ᴄᴀɴ ᴀᴄᴄᴇss ᴛʜɪs", show_alert=True)
+        await callback_query.answer("ᴏɴʟʏ sᴜᴅᴏᴇʀs ᴀɴᴅ ᴏᴡɴᴇʀ ᴄᴀɴ ᴀᴄᴄᴇss ᴛʜɪs", show_alert=True)
+        return
 
     owner = await app.get_users(OWNER_ID)
     caption = f"**˹ʟɪsᴛ ᴏғ ʙᴏᴛ ᴍᴏᴅᴇʀᴀᴛᴏʀs˼**\n\n**🌹Oᴡɴᴇʀ** ➥ {owner.mention}\n\n"

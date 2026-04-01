@@ -45,13 +45,15 @@ async def manage_callback(client, CallbackQuery, _):
     chat, speed = callback_request.split("|")
     chat_id = int(chat)
     if not await is_active_chat(chat_id):
-        return await CallbackQuery.answer(_["general_5"], show_alert=True)
+        await CallbackQuery.answer(_["general_5"], show_alert=True)
+        return
     is_non_admin = await is_nonadmin_chat(CallbackQuery.message.chat.id)
     if not is_non_admin:
         if CallbackQuery.from_user.id not in SUDOERS:
             admins = adminlist.get(CallbackQuery.message.chat.id)
             if not admins:
-                return await CallbackQuery.answer(_["admin_13"], show_alert=True)
+                await CallbackQuery.answer(_["admin_13"], show_alert=True)
+                return
             else:
                 if CallbackQuery.from_user.id not in admins:
                     return await CallbackQuery.answer(_["admin_14"], show_alert=True)
