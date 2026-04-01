@@ -312,7 +312,8 @@ async def authusers_mar(client, callback: CallbackQuery, _):
         _authusers = await get_authuser_names(callback.message.chat.id)
         if not _authusers:
             try:
-                return await callback.answer(_["setting_4"], show_alert=True)
+                await callback.answer(_["setting_4"], show_alert=True)
+        return
             except Exception:
                 return
         else:

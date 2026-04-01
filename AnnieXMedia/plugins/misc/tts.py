@@ -193,9 +193,10 @@ async def cb_tts(client: Client, callback: CallbackQuery):
     key = _session_key(callback.message.chat.id, callback.from_user.id)
     text = _voice_sessions.get(key)
     if not text:
-        return await callback.answer(
+        await callback.answer(
             "⚠️ Session expired. Send `/voices` again.", show_alert=True
         )
+        return
 
     if step == "lang":
         if "v" not in parts:
@@ -285,7 +286,8 @@ async def cb_tts(client: Client, callback: CallbackQuery):
         finally:
             _cleanup(tmp)
             _voice_sessions.pop(key, None)
-        return await callback.answer()
+        await callback.answer()
+        return
 
     await callback.answer("🤔 Unknown action. Send /voices again.", show_alert=True)
 

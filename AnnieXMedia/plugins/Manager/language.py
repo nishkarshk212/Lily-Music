@@ -75,14 +75,16 @@ async def language_markup(client, CallbackQuery: CallbackQuery, _):
     lang_code = CallbackQuery.data.split(":")[1]
     old_lang = await get_lang(CallbackQuery.message.chat.id)
     if str(old_lang) == str(lang_code):
-        return await CallbackQuery.answer(_["lang_4"], show_alert=True)
+        await CallbackQuery.answer(_["lang_4"], show_alert=True)
+        return
 
     try:
         _ = get_string(lang_code)
         await CallbackQuery.answer(_["lang_2"], show_alert=True)
     except:
         _ = get_string(old_lang)
-        return await CallbackQuery.answer(_["lang_3"], show_alert=True)
+        await CallbackQuery.answer(_["lang_3"], show_alert=True)
+        return
 
     await set_lang(CallbackQuery.message.chat.id, lang_code)
     keyboard = languages_keyboard(_)

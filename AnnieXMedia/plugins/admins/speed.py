@@ -56,35 +56,42 @@ async def manage_callback(client, CallbackQuery, _):
                 return
             else:
                 if CallbackQuery.from_user.id not in admins:
-                    return await CallbackQuery.answer(_["admin_14"], show_alert=True)
+                    await CallbackQuery.answer(_["admin_14"], show_alert=True)
+        return
     playing = db.get(chat_id)
     if not playing:
-        return await CallbackQuery.answer(_["queue_2"], show_alert=True)
+        await CallbackQuery.answer(_["queue_2"], show_alert=True)
+        return
     duration_seconds = int(playing[0]["seconds"])
     if duration_seconds == 0:
-        return await CallbackQuery.answer(_["admin_27"], show_alert=True)
+        await CallbackQuery.answer(_["admin_27"], show_alert=True)
+        return
     file_path = playing[0]["file"]
     if "downloads" not in file_path:
-        return await CallbackQuery.answer(_["admin_27"], show_alert=True)
+        await CallbackQuery.answer(_["admin_27"], show_alert=True)
+        return
     checkspeed = (playing[0]).get("speed")
     if checkspeed:
         if str(checkspeed) == str(speed):
             if str(speed) == str("1.0"):
-                return await CallbackQuery.answer(
+                await CallbackQuery.answer(
                     _["admin_29"],
                     show_alert=True,
                 )
+        return
     else:
         if str(speed) == str("1.0"):
-            return await CallbackQuery.answer(
+            await CallbackQuery.answer(
                 _["admin_29"],
                 show_alert=True,
             )
+        return
     if chat_id in checker:
-        return await CallbackQuery.answer(
+        await CallbackQuery.answer(
             _["admin_30"],
             show_alert=True,
         )
+        return
     else:
         checker.append(chat_id)
     try:

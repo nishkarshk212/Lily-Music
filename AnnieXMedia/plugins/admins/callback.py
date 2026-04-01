@@ -67,12 +67,14 @@ async def manage_callback(client, callback: CallbackQuery, _):
     command, chat_info = data.split("|", 1)
     chat_id, counter = parse_chat_info(chat_info)
     if not await is_active_chat(chat_id):
-        return await callback.answer(_["general_5"], show_alert=True)
+        await callback.answer(_["general_5"], show_alert=True)
+        return
     user_mention = callback.from_user.mention
     
     if command == "Pause":
         if not await is_music_playing(chat_id):
-            return await callback.answer(_["admin_1"], show_alert=True)
+            await callback.answer(_["admin_1"], show_alert=True)
+            return
         await callback.answer()
         await music_off(chat_id)
         await StreamController.pause_stream(chat_id)
@@ -80,7 +82,8 @@ async def manage_callback(client, callback: CallbackQuery, _):
 
     elif command == "Resume":
         if await is_music_playing(chat_id):
-            return await callback.answer(_["admin_3"], show_alert=True)
+            await callback.answer(_["admin_3"], show_alert=True)
+            return
         await callback.answer()
         await music_on(chat_id)
         await StreamController.resume_stream(chat_id)
@@ -101,14 +104,17 @@ async def manage_callback(client, callback: CallbackQuery, _):
     elif command == "Shuffle":
         playlist = db.get(chat_id)
         if not playlist:
-            return await callback.answer(_["admin_42"], show_alert=True)
+            await callback.answer(_["admin_42"], show_alert=True)
+            return
         try:
             popped = playlist.pop(0)
         except Exception:
-            return await callback.answer(_["admin_43"], show_alert=True)
+            await callback.answer(_["admin_43"], show_alert=True)
+            return
         if not playlist:
             playlist.insert(0, popped)
-            return await callback.answer(_["admin_43"], show_alert=True)
+            await callback.answer(_["admin_43"], show_alert=True)
+            return
         await callback.answer()
         random.shuffle(playlist)
         playlist.insert(0, popped)
@@ -125,7 +131,8 @@ async def handle_skip_replay(callback: CallbackQuery, _, chat_id: int, command: 
     playlist = db.get(chat_id)
 
     if not playlist or len(playlist) == 0:
-        return await callback.answer(_["queue_2"], show_alert=True)
+        await callback.answer(_["queue_2"], show_alert=True)
+        return
 
     if command == "Skip":
         text_msg = f"➻ sᴛʀᴇᴀᴍ sᴋɪᴩᴩᴇᴅ 🎄\n│ \n└ʙʏ : {user_mention} 🥀"
@@ -153,7 +160,8 @@ async def handle_skip_replay(callback: CallbackQuery, _, chat_id: int, command: 
     await callback.answer()
 
     if len(playlist) == 0:
-        return await callback.answer(_["queue_2"], show_alert=True)
+        await callback.answer(_["queue_2"], show_alert=True)
+        return
 
     current_track = playlist[0]
     queued = current_track["file"]
@@ -284,33 +292,38 @@ async def handle_skip_replay(callback: CallbackQuery, _, chat_id: int, command: 
 async def handle_seek(callback: CallbackQuery, _, chat_id: int, command: str, user_mention: str):
     playing = db.get(chat_id)
     if not playing or len(playing) == 0:
-        return await callback.answer(_["queue_2"], show_alert=True)
+        await callback.answer(_["queue_2"], show_alert=True)
+        return
     duration_seconds = int(playing[0]["seconds"])
     if duration_seconds == 0:
-        return await callback.answer(_["admin_22"], show_alert=True)
+        await callback.answer(_["admin_22"], show_alert=True)
+        return
     file_path = playing[0]["file"]
     if "index_" in file_path or "live_" in file_path:
-        return await callback.answer(_["admin_22"], show_alert=True)
+        await callback.answer(_["admin_22"], show_alert=True)
+        return
     duration_played = int(playing[0]["played"])
     duration_to_skip = 10 if int(command) in [1, 2] else 30
     duration = playing[0]["dur"]
     if int(command) in [1, 3]:
         if (duration_played - duration_to_skip) <= 10:
             bet = seconds_to_min(duration_played)
-            return await callback.answer(
+            await callback.answer(
                 f"» ʙᴏᴛ ɪs ᴜɴᴀʙʟᴇ ᴛᴏ sᴇᴇᴋ ʙᴇᴄᴀᴜsᴇ ᴛʜᴇ ᴅᴜʀᴀᴛɪᴏɴ ᴇxᴄᴇᴇᴅs.\n\n"
                 f"ᴄᴜʀʀᴇɴᴛʟʏ ᴩʟᴀʏᴇᴅ :** {bet}** ᴍɪɴᴜᴛᴇs ᴏᴜᴛ ᴏғ **{duration}** ᴍɪɴᴜᴛᴇs.",
                 show_alert=True
             )
+            return
         to_seek = duration_played - duration_to_skip + 1
     else:
         if (duration_seconds - (duration_played + duration_to_skip)) <= 10:
             bet = seconds_to_min(duration_played)
-            return await callback.answer(
+            await callback.answer(
                 f"» ʙᴏᴛ ɪs ᴜɴᴀʙʟᴇ ᴛᴏ sᴇᴇᴋ ʙᴇᴄᴀᴜsᴇ ᴛʜᴇ ᴅᴜʀᴀᴛɪᴏɴ ᴇxᴄᴇᴇᴅs.\n\n"
                 f"ᴄᴜʀʀᴇɴᴛʟʏ ᴩʟᴀʏᴇᴅ :** {bet}** ᴍɪɴᴜᴛᴇs ᴏᴜᴛ ᴏғ **{duration}** ᴍɪɴᴜᴛᴇs.",
                 show_alert=True
             )
+            return
         to_seek = duration_played + duration_to_skip + 1
     await callback.answer()
     mystic = await callback.message.reply_text(_["admin_24"])
@@ -395,13 +408,16 @@ async def close_menu(_, query: CallbackQuery):
 async def stop_download(_, query: CallbackQuery, _lang):
     task = lyrical.get(query.message.id)
     if not task:
-        return await query.answer(_lang["tg_4"], show_alert=True)
+        await query.answer(_lang["tg_4"], show_alert=True)
+        return
     if task.done() or task.cancelled():
-        return await query.answer(_lang["tg_5"], show_alert=True)
+        await query.answer(_lang["tg_5"], show_alert=True)
+        return
     try:
         task.cancel()
         lyrical.pop(query.message.id, None)
         await query.answer(_lang["tg_6"], show_alert=True)
         return await query.edit_message_text(_lang["tg_7"].format(query.from_user.mention))
     except:
-        return await query.answer(_lang["tg_8"], show_alert=True)
+        await query.answer(_lang["tg_8"], show_alert=True)
+        return

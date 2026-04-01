@@ -162,7 +162,8 @@ async def deleteall_callback(client, callback: CallbackQuery):
 
     ok, _ = await is_owner_or_sudoer(client, chat_id, uid)
     if not ok:
-        return await callback.answer("Only the group owner can confirm.", show_alert=True)
+        await callback.answer("Only the group owner can confirm.", show_alert=True)
+        return
 
     if ans == "no":
         await _safe_edit(callback, "Delete all canceled.")

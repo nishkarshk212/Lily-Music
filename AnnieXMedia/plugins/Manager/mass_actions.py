@@ -62,7 +62,8 @@ async def handle_mass_confirm(client: Client, callback: CallbackQuery):
 
     ok, owner = await is_owner_or_sudoer(client, chat_id, uid)
     if not ok:
-        return await callback.answer("Only the group owner can confirm.", show_alert=True)
+        await callback.answer("Only the group owner can confirm.", show_alert=True)
+        return
 
     if answer == "no":
         return await callback.message.edit(f"❌ `{cmd}` canceled.")

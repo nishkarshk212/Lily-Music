@@ -190,16 +190,20 @@ async def clean_zombies_channel(_: Client, cq: CallbackQuery):
         chat_id = int(chat_id_str)
         user_id = int(user_id_str)
     except:
-        return await cq.answer("Invalid data.", show_alert=True)
+        await cq.answer("Invalid data.", show_alert=True)
+        return
 
     if cq.from_user.id != user_id:
-        return await cq.answer("This panel is not for you.", show_alert=True)
+        await cq.answer("This panel is not for you.", show_alert=True)
+        return
 
     if not await _bot_is_admin(chat_id):
-        return await cq.answer("I no longer have admin rights.", show_alert=True)
+        await cq.answer("I no longer have admin rights.", show_alert=True)
+        return
 
     if chat_id in chatQueue:
-        return await cq.answer("Cleanup already in progress.", show_alert=True)
+        await cq.answer("Cleanup already in progress.", show_alert=True)
+        return
 
     chatQueue.add(chat_id)
     stopProcess[chat_id] = False
@@ -209,7 +213,8 @@ async def clean_zombies_channel(_: Client, cq: CallbackQuery):
 
     if total == 0:
         chatQueue.discard(chat_id)
-        return await cq.answer("No zombies to remove.", show_alert=True)
+        await cq.answer("No zombies to remove.", show_alert=True)
+        return
 
     status = await cq.edit_message_text(
         f"<i>Removing {total} zombies...</i>",
@@ -259,16 +264,20 @@ async def clean_bots_channel(_: Client, cq: CallbackQuery):
         chat_id = int(chat_id_str)
         user_id = int(user_id_str)
     except:
-        return await cq.answer("Invalid data.", show_alert=True)
+        await cq.answer("Invalid data.", show_alert=True)
+        return
 
     if cq.from_user.id != user_id:
-        return await cq.answer("This panel is not for you.", show_alert=True)
+        await cq.answer("This panel is not for you.", show_alert=True)
+        return
 
     if not await _bot_is_admin(chat_id):
-        return await cq.answer("I no longer have admin rights.", show_alert=True)
+        await cq.answer("I no longer have admin rights.", show_alert=True)
+        return
 
     if chat_id in chatQueue:
-        return await cq.answer("Cleanup already in progress.", show_alert=True)
+        await cq.answer("Cleanup already in progress.", show_alert=True)
+        return
 
     chatQueue.add(chat_id)
     stopProcess[chat_id] = False
@@ -278,7 +287,8 @@ async def clean_bots_channel(_: Client, cq: CallbackQuery):
 
     if total == 0:
         chatQueue.discard(chat_id)
-        return await cq.answer("No bots to remove.", show_alert=True)
+        await cq.answer("No bots to remove.", show_alert=True)
+        return
 
     status = await cq.edit_message_text(
         f"<i>Removing {total} bots...</i>",
@@ -327,10 +337,12 @@ async def close_panel(_: Client, cq: CallbackQuery):
         _, user_id_str = cq.data.split(":")
         user_id = int(user_id_str)
     except:
-        return await cq.answer("Error.", show_alert=True)
+        await cq.answer("Error.", show_alert=True)
+        return
 
     if cq.from_user.id != user_id:
-        return await cq.answer("Not your panel.", show_alert=True)
+        await cq.answer("Not your panel.", show_alert=True)
+        return
 
     await cq.message.delete()
 
@@ -339,13 +351,16 @@ async def execute_zombie_cleanup(_: Client, cq: CallbackQuery):
     try:
         chat_id = int(cq.data.split(":")[1])
     except:
-        return await cq.answer("Invalid data.", show_alert=True)
+        await cq.answer("Invalid data.", show_alert=True)
+        return
 
     if not await is_admin(cq):
-        return await cq.answer("Admins only.", show_alert=True)
+        await cq.answer("Admins only.", show_alert=True)
+        return
 
     if chat_id in chatQueue:
-        return await cq.answer("Already running.", show_alert=True)
+        await cq.answer("Already running.", show_alert=True)
+        return
 
     chatQueue.add(chat_id)
     stopProcess[chat_id] = False

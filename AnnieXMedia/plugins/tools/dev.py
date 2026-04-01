@@ -124,9 +124,10 @@ async def forceclose_command(_, CallbackQuery):
     query, user_id = callback_request.split("|")
     if CallbackQuery.from_user.id != int(user_id):
         try:
-            return await CallbackQuery.answer(
+            await CallbackQuery.answer(
                 "» ɪᴛ'ʟʟ ʙᴇ ʙᴇᴛᴛᴇʀ ɪғ ʏᴏᴜ sᴛᴀʏ ɪɴ ʏᴏᴜʀ ʟɪᴍɪᴛs ʙᴀʙʏ.", show_alert=True
             )
+        return
         except:
             return
     await CallbackQuery.message.delete()
