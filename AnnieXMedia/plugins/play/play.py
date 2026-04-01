@@ -495,9 +495,10 @@ async def play_command(
                 "spartist": "Spotify artist",
                 "apple": "Apple Music playlist",
             }
-            return await play_logs(
+            await play_logs(
                 message, streamtype=plist_label_map.get(plist_type, "Playlist")
             )
+            return
 
         else:
             if slider:
