@@ -97,14 +97,14 @@ async def set_mataa(_, message: Message):
     if len(message.command) == 1:
         return await message.reply("ᴅᴇᴛᴇᴄᴛ ᴘʀᴇᴛᴇɴᴅᴇʀ ᴜsᴇʀs **ᴜsᴀɢᴇ:** `/imposter enable|disable`")
     if message.command[1] == "enable":
-        cekset = await impo_on(message.chat.id)
+        cekset = await check_pretender(message.chat.id)
         if cekset:
             await message.reply("**ᴘʀᴇᴛᴇɴᴅᴇʀ ᴍᴏᴅᴇ ɪs ᴀʟʀᴇᴀᴅʏ ᴇɴᴀʙʟᴇᴅ.**")
         else:
             await impo_on(message.chat.id)
             await message.reply(f"**sᴜᴄᴄᴇssғᴜʟʟʏ ᴇɴᴀʙʟᴇᴅ ᴘʀᴇᴛᴇɴᴅᴇʀ ᴍᴏᴅᴇ ғᴏʀ** {message.chat.title}")
     elif message.command[1] == "disable":
-        cekset = await impo_off(message.chat.id)
+        cekset = await check_pretender(message.chat.id)
         if not cekset:
             await message.reply("**ᴘʀᴇᴛᴇɴᴅᴇʀ ᴍᴏᴅᴇ ɪs ᴀʟʀᴇᴀᴅʏ ᴅɪsᴀʙʟᴇᴅ.**")
         else:
